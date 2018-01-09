@@ -6,7 +6,7 @@ const accumulate = (o,kv)=> {
   o[kv.key] = kv.value;
   return o;
 };
-const parseBody = text=> text && text.split('&').map(toKeyValue).reduce(accumulate,{}) || {};
+const parseBody = text=> text && text.replace(/\+/g," ").split('&').map(toKeyValue).reduce(accumulate,{}) || {};
 
 let redirect = function(path){
   console.log(`redirecting to ${path}`);
@@ -75,7 +75,7 @@ const main = function(req,res){
     });
     if(res.finished) return;
     invoke.call(this,req,res);
-    this._postprocess.push(handleInvalidRequest)
+    // this._postprocess.push(handleInvalidRequest)
     this._postprocess.forEach((action)=>{
       if(res.finished) return;
       action(req,res);

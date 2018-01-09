@@ -1,68 +1,78 @@
 const fs = require('fs');
 
-const getContentType = function(path){
+const getContentType = function(path) {
   let FileExtension = path.split(".")[1];
-  let contentTypes = {"html": "text/html","css": "text/css","pdf": "text/pdf",
-    "jpg": "img/gif","gif": "img/gif"};
+  let contentTypes = {
+    "html": "text/html",
+    "css": "text/css",
+    "pdf": "text/pdf",
+    "jpg": "img/gif",
+    "gif": "img/gif"
+  };
   return contentTypes[FileExtension];
 }
 
-const handleSlash = function(req,res){
-  if(req.url == "/" && req.method == "GET"){
+const handleSlash = function(req, res) {
+  if (req.url == "/" && req.method == "GET") {
     res.redirect("/index.html");
   };
 }
 
-const handleStaticFiles = function(req,res){
-  if(fs.existsSync("./public"+req.url)){
-    let contentType = getContentType(req.url);
+const handleStaticFiles = function(req, res) {
+    let contentType = getContentType(req.url) || "";
     res.statusCode = 200;
-    res.setHeader("content-type",contentType);
-    res.write(fs.readFileSync("./public"+req.url));
-    res.end();
-  };
+    fs.readFile("./public" + req.url, (err, data) => {
+      if (err) {
+        res.statusCode = 404;
+      };
+      res.setHeader("content-type", contentType);
+      res.write(data);
+      res.end();
+    });
 }
 
-const handleLogIn =function(req,res){
+const handleLogIn = function(req, res) {
   debugger;
   let userId = req.body.userId;
   let password = req.body.password;
-  let user = this.getUser(userId,password)
-  if(user){
+  let user = this.getUser(userId, password)
+  if (user) {
     sessionId = new Date().getTime();
     user.sessionId = sessionId;
-    res.setHeader('Set-Cookie',[`sessionId=${sessionId}`,`logInStatus=1`,
-      `name=${user.name}`]);
-  }else{
-    res.setHeader('Set-Cookie',[`sessionId=0`]);
+    res.setHeader('Set-Cookie', [`sessionId=${sessionId}`, `logInStatus=1`,
+      `name=${user.name}`
+    ]);
+  } else {
+    res.setHeader('Set-Cookie', [`sessionId=0`]);
   };
   res.redirect('/index.html');
   return;
 }
 
-const handleLogOut = function(req,res){
-  res.setHeader('Set-Cookie',[`sessionId=0`,`logInStatus=0`]);
+const handleLogOut = function(req, res) {
+  res.setHeader('Set-Cookie', [`sessionId=0`, `logInStatus=0`]);
   res.redirect("/index.html");
 }
 
-const redirectLogedInUserToGuestBook = function(req,res){
+const redirectLogedInUserToGuestBook = function(req, res) {
   debugger;
-  if(req.url == '/logIn.html' && req.user){
+  if (req.url == '/logIn.html' && req.user) {
     res.redirect('/guestBook.html');
   };
 }
 
-const handleLoadingComments = function(req,res){
+const handleLoadingComments = function(req, res) {
   res.write(JSON.stringify(this.getComments()));
   res.end();
 };
 
-const handleNewComment = function(req,res){
+const handleNewComment = function(req, res) {
   let sessionId = req.cookies.sessionId;
   let commenter = this.getUserBySessionId(sessionId);
+  console.log(commenter);
   let name = req.body.name;
   let comment = req.body.comment;
-  this.addComment(name,comment);
+  this.addComment(name, comment);
   res.redirect('/guestBook.html');
 }
 
