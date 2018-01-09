@@ -9,9 +9,10 @@
     const displayComments = function(comments) {
       let table = document.getElementById('commentsTable');
       let insertedRow;
-      comments.forEach((ele)=>{
-        element = JSON.parse(ele);
+      comments.forEach((element)=>{
+        // element = JSON.parse(ele);
         insertedRow = table.insertRow();
+        console.log(element);
         insertedRow.insertCell().innerText = element.date;
         insertedRow.insertCell().innerText = element.name;
         insertedRow.insertCell().innerText = element.comment;
@@ -20,7 +21,6 @@
 
     const getComments = function() {
       let req = new XMLHttpRequest();
-      console.log('hi');
       req.onreadystatechange = function() {
         let commentsStore = JSON.parse(this.responseText).reverse();
         displayComments(commentsStore);

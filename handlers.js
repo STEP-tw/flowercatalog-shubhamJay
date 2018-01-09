@@ -51,7 +51,6 @@ const redirectLogedInUserToGuestBook = function(req,res){
 }
 
 const handleLoadingComments = function(req,res){
-  console.log(this.getComments());
   res.write(JSON.stringify(this.getComments()));
   res.end();
 };
@@ -69,6 +68,6 @@ exports.handleSlash = handleSlash;
 exports.handleLoadingComments = handleLoadingComments;
 exports.handleLogIn = handleLogIn;
 exports.handleLogOut = handleLogOut;
-exports.handleNewComment = handleLogOut;
+exports.handleNewComment = handleNewComment;
 exports.handleStaticFiles = handleStaticFiles;
 exports.redirectLogedInUserToGuestBook = redirectLogedInUserToGuestBook;

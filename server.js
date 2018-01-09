@@ -6,7 +6,7 @@ const dataBase = "./data/commentStore.json";
 const port = 8020;
 
 let app = WebApp.create();
-let UserCommentLog = new Catalog('./commentStore.json');
+let UserCommentLog = new Catalog();
 
 const lib = require('./handlers.js');
 
@@ -15,8 +15,8 @@ const handleLoadingComments = lib.handleLoadingComments.bind(UserCommentLog);
 const handleLogIn = lib.handleLogIn.bind(UserCommentLog);
 const handleLogOut = lib.handleLogOut;
 const handleStaticFiles = lib.handleStaticFiles;
+const handleNewComment = lib.handleNewComment.bind(UserCommentLog);
 const redirectLogedInUserToGuestBook = lib.redirectLogedInUserToGuestBook;
-
 
 const getUserInReq = function(req,res){
   let sessionId = req.body.sessionId;
@@ -24,8 +24,6 @@ const getUserInReq = function(req,res){
   if(sessionId && user)req.user = user;
 };
 let getUserFromCatalog = getUserInReq.bind(UserCommentLog);
-
-UserCommentLog.loadStoredComments();
 
 
 app.preUse(getUserFromCatalog);
@@ -36,7 +34,7 @@ app.get("/loadComments",handleLoadingComments);
 app.get("/logOut",handleLogOut)
 
 app.post("/logIn",handleLogIn)
-// app.post("/commentAccepted",handleNewComment)
+app.post("/commentAccepted",handleNewComment)
 
 app.postUse(handleStaticFiles);
 

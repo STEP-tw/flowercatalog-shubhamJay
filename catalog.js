@@ -1,19 +1,8 @@
 const fs = require('fs');
 
-const Catalog = function(path){
+const Catalog = function(){
   this.allUsers = [{name:'shubham',userId:'shubham',password:'shubham'}];
-  this.commentHistory = [];
-  this.dataBase = `./data/${path}`;
-};
-
-Catalog.prototype.loadStoredComments = function () {
-  let comments = fs.readFileSync(this.dataBase,'utf8').split("\n").reverse();
-  this.commentHistory = comments;
-};
-
-Catalog.prototype.addNewUser = function (name,userId,password) {
-  this.allUsers.push({name:name,userId:userId,password:password});
-  this.storeUsers("./data/allUsers.json");
+  this.commentHistory = [{"name":"shubham","comment":"hi. how are you","date":"1/9/2018, 5:33:43 PM"}];
 };
 
 Catalog.prototype.isValidUser = function (enteredId,enteredPassword) {
@@ -36,19 +25,9 @@ Catalog.prototype.getComments = function () {
 };
 
 Catalog.prototype.addComment = function (name,comment) {
-  this.commentHistory.push({sender:name,comment:comment});
-  this.storeComments();
+  let date = new Date().toLocaleString();
+  this.commentHistory.push({name:name,comment:comment,date:date});
 };
 
-Catalog.prototype.storeComments = function () {
-  fs.writeFileSync(this.dataBase);
-};
-//
-// Catalog.prototype.storeUsers = function () {
-//   fs.writeFile(,JSON.stringify(this.allUsers),(err)=>{
-//     if(err) console.log("error in saving data");
-//     console.log("file saved");
-//   });
-// };
 
 module.exports = Catalog;
