@@ -31,7 +31,8 @@ const handleLogIn =function(req,res){
   if(user){
     sessionId = new Date().getTime();
     user.sessionId = sessionId;
-    res.setHeader('Set-Cookie',[`sessionId=${sessionId}`,`logInStatus=1`]);
+    res.setHeader('Set-Cookie',[`sessionId=${sessionId}`,`logInStatus=1`,
+      `name=${user.name}`]);
   }else{
     res.setHeader('Set-Cookie',[`sessionId=0`]);
   };

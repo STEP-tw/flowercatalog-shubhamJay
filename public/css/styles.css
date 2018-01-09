@@ -68,14 +68,18 @@ body{
   padding-bottom: 20px;
 }
 
-.logOutBox{
+.hide{
   visibility: hidden;
 }
 
-.showLogOutBox{
+.show{
   visibility: hidden;
 }
 
 .logInForm{
   text-align: center;
+}
+
+#userName{
+  text-align: right;
 }

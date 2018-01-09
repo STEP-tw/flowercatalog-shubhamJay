@@ -43,10 +43,16 @@
       commentSection.style.visibility = "hidden";
     };
 
+    const showUserName = function(name){
+      let userNameBox = document.getElementById("userName");
+      userNameBox.innerText += name;
+    }
+
     const showCommentSectionIfUser = function() {
       let cookies = parsekeyVal(document.cookie);
       if (!+cookies.sessionId && !+cookies.logInStatus)
         hideCommentsSection();
+        showUserName(cookies.name);
     }
 
     const actionOnPageLoad = function() {
@@ -61,7 +67,7 @@
     <h1 id="flowerHeading"><a href="index.html"> << </a> Guest Book</h1>
   </div>
   <form id="guestBookForm" action="commentAccepted" method="post">
-    <!-- <h2>logged</h2> -->
+    <h2 id="userName">name of User : </h2>
     <h2 style="font-family:san-sarif">Leave A comment</h2> Your Name<input type="text" name="name" required/> <br /><br /> Comment
     <textarea name="comment" style="height:40px" required></textarea><br />
     <button>submit</button>
