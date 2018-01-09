@@ -45,6 +45,7 @@ const handleLogOut = function(req,res){
 }
 
 const redirectLogedInUserToGuestBook = function(req,res){
+  debugger;
   if(req.url == '/logIn.html' && req.user){
     res.redirect('/guestBook.html');
   };

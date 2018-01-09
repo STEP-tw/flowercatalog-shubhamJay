@@ -9,10 +9,8 @@
     const displayComments = function(comments) {
       let table = document.getElementById('commentsTable');
       let insertedRow;
-      comments.forEach((element)=>{
-        // element = JSON.parse(ele);
+      comments.forEach((element) => {
         insertedRow = table.insertRow();
-        console.log(element);
         insertedRow.insertCell().innerText = element.date;
         insertedRow.insertCell().innerText = element.name;
         insertedRow.insertCell().innerText = element.comment;
@@ -22,8 +20,10 @@
     const getComments = function() {
       let req = new XMLHttpRequest();
       req.onreadystatechange = function() {
-        let commentsStore = JSON.parse(this.responseText).reverse();
-        displayComments(commentsStore);
+        if (this.readyState == 4 && this.status == 200) {
+          let commentsStore = JSON.parse(this.responseText).reverse();
+          displayComments(commentsStore);
+        }
       };
       req.open("GET", "/loadComments");
       req.send();
@@ -45,11 +45,11 @@
 
     const showCommentSectionIfUser = function() {
       let cookies = parsekeyVal(document.cookie);
-      if (! +cookies.sessionId && ! +cookies.logInStatus)
-       hideCommentsSection();
+      if (!+cookies.sessionId && !+cookies.logInStatus)
+        hideCommentsSection();
     }
 
-    const actionOnPageLoad = function(){
+    const actionOnPageLoad = function() {
       getComments();
       showCommentSectionIfUser();
     }
@@ -61,8 +61,8 @@
     <h1 id="flowerHeading"><a href="index.html"> << </a> Guest Book</h1>
   </div>
   <form id="guestBookForm" action="commentAccepted" method="post">
-    <h2 style="font-family:san-sarif">Leave A comment</h2>
-    Your Name<input type="text" name="name" required/> <br /><br /> Comment
+    <!-- <h2>logged</h2> -->
+    <h2 style="font-family:san-sarif">Leave A comment</h2> Your Name<input type="text" name="name" required/> <br /><br /> Comment
     <textarea name="comment" style="height:40px" required></textarea><br />
     <button>submit</button>
   </form>
