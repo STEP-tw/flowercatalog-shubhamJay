@@ -6,7 +6,7 @@
   <title>Guest Book</title>
   <link rel="stylesheet" href="css/styles.css" />
   <script type="text/javascript">
-    const showComments = function(comments) {
+    const displayComments = function(comments) {
       let table = document.getElementById('commentsTable');
       let insertedRow;
       comments.forEach((ele)=>{
@@ -20,9 +20,10 @@
 
     const getComments = function() {
       let req = new XMLHttpRequest();
+      console.log('hi');
       req.onreadystatechange = function() {
         let commentsStore = JSON.parse(this.responseText).reverse();
-        showComments(commentsStore);
+        displayComments(commentsStore);
       };
       req.open("GET", "/loadComments");
       req.send();
@@ -42,15 +43,15 @@
       commentSection.style.visibility = "hidden";
     };
 
-    const showCookiesIfUser = function() {
+    const showCommentSectionIfUser = function() {
       let cookies = parsekeyVal(document.cookie);
-      if (! +cookies.sessionId && !+cookies.logInStatus)
+      if (! +cookies.sessionId && ! +cookies.logInStatus)
        hideCommentsSection();
     }
 
     const actionOnPageLoad = function(){
       getComments();
-      showCookiesIfUser();
+      showCommentSectionIfUser();
     }
   </script>
 </head>

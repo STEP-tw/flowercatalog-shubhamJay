@@ -33,15 +33,14 @@ const handleLogIn =function(req,res){
     user.sessionId = sessionId;
     res.setHeader('Set-Cookie',[`sessionId=${sessionId}`,`logInStatus=1`]);
   }else{
-    res.setHeader('Set-Cookie',[`sessionId=0`,`logInStatus=0`]);
+    res.setHeader('Set-Cookie',[`sessionId=0`]);
   };
   res.redirect('/index.html');
   return;
 }
 
 const handleLogOut = function(req,res){
-  res.setHeader('Set-Cookie',[`sessionId=0`,
-      `logInStatus=0`]);
+  res.setHeader('Set-Cookie',[`sessionId=0`,`logInStatus=0`]);
   res.redirect("/index.html");
 }
 
@@ -52,6 +51,7 @@ const redirectLogedInUserToGuestBook = function(req,res){
 }
 
 const handleLoadingComments = function(req,res){
+  console.log(this.getComments());
   res.write(JSON.stringify(this.getComments()));
   res.end();
 };
@@ -64,7 +64,6 @@ const handleNewComment = function(req,res){
   this.addComment(name,comment);
   res.redirect('/guestBook.html');
 }
-
 
 exports.handleSlash = handleSlash;
 exports.handleLoadingComments = handleLoadingComments;

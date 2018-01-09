@@ -14,7 +14,6 @@ const handleSlash = lib.handleSlash;
 const handleLoadingComments = lib.handleLoadingComments.bind(UserCommentLog);
 const handleLogIn = lib.handleLogIn.bind(UserCommentLog);
 const handleLogOut = lib.handleLogOut;
-// const handleNewComment = lib.handleNewComment.bind(UserCommentLog);
 const handleStaticFiles = lib.handleStaticFiles;
 const redirectLogedInUserToGuestBook = lib.redirectLogedInUserToGuestBook;
 
@@ -34,9 +33,9 @@ app.preUse(handleSlash);
 app.preUse(redirectLogedInUserToGuestBook);
 
 app.get("/loadComments",handleLoadingComments);
+app.get("/logOut",handleLogOut)
 
 app.post("/logIn",handleLogIn)
-app.post("/logOut",handleLogOut)
 // app.post("/commentAccepted",handleNewComment)
 
 app.postUse(handleStaticFiles);

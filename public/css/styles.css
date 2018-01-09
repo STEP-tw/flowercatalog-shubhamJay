@@ -4,9 +4,6 @@ body{
   margin-right: 50px;
   font-family: sans-serif;
 }
-/*form{
-  text-align: center;
-}*/
 
 .dialogBox{
   text-align: center;
@@ -71,10 +68,14 @@ body{
   padding-bottom: 20px;
 }
 
-#logOutBox{
+.logOutBox{
   visibility: hidden;
 }
 
-/*#commentSection{
+.showLogOutBox{
   visibility: hidden;
-}*/
+}
+
+.logInForm{
+  text-align: center;
+}

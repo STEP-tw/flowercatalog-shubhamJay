@@ -1,0 +1,4 @@
+1) add new comment
+2) add new user
+3) fix bug which is showing comment double
+4)
