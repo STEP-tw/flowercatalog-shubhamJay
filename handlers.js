@@ -45,7 +45,7 @@ const handleLogIn = function(req, res) {
 }
 
 const handleLogOut = function(req, res) {
-  res.setHeader('Set-Cookie', [`sessionId=0`, `logInStatus=0`]);
+  res.setHeader('Set-Cookie', [`sessionId=0,Expires=${new Date(1).toUTCString()}`, `logInStatus=0,Expires=${new Date(1).toUTCString()}`]);
   res.redirect("/guestBook.html");
 }
 
