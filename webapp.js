@@ -60,6 +60,7 @@ let urlIsOneOf = function(urls){
 
 const main = function(req,res){
   // console.log(req.headers);
+  debugger;
   console.log(`${req.method}   ${req.url}`);
   res.redirect = redirect.bind(res);
   req.urlIsOneOf = urlIsOneOf.bind(req);
@@ -67,6 +68,7 @@ const main = function(req,res){
   let content="";
   req.on('data',data=>content+=data.toString())
   req.on('end',()=>{
+    debugger;
     req.body = parseBody(content);
     content="";
     this._preprocess.forEach(middleware=>{

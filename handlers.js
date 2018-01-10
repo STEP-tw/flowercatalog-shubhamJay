@@ -7,28 +7,25 @@ const getContentType = function(path) {
     "css": "text/css",
     "pdf": "text/pdf",
     "jpg": "img/gif",
-    "gif": "img/gif"
+    "gif": "img/gif",
+    "js":'text/javascript',
   };
   return contentTypes[FileExtension];
 }
 
 const handleSlash = function(req, res) {
   if (req.url == "/" && req.method == "GET") {
-    res.redirect("/index.html");
+    req.url = "/index.html";
   };
 }
 
 const handleStaticFiles = function(req, res) {
-    let contentType = getContentType(req.url) || "";
+  if(fs.existsSync("./public"+req.url)){
     res.statusCode = 200;
-    fs.readFile("./public" + req.url, (err, data) => {
-      if (err) {
-        res.statusCode = 404;
-      };
-      res.setHeader("content-type", contentType);
-      res.write(data);
-      res.end();
-    });
+    res.setHeader('content-type',getContentType(req.url));
+    res.write(fs.readFileSync('./public'+req.url));
+    res.end();
+  }
 }
 
 const handleLogIn = function(req, res) {
@@ -39,23 +36,20 @@ const handleLogIn = function(req, res) {
   if (user) {
     sessionId = new Date().getTime();
     user.sessionId = sessionId;
-    res.setHeader('Set-Cookie', [`sessionId=${sessionId}`, `logInStatus=1`,
-      `name=${user.name}`
-    ]);
+    res.setHeader('Set-Cookie', [`sessionId=${sessionId}`, `logInStatus=1`]);
   } else {
     res.setHeader('Set-Cookie', [`sessionId=0`]);
   };
-  res.redirect('/index.html');
+  res.redirect('/guestBook.html');
   return;
 }
 
 const handleLogOut = function(req, res) {
   res.setHeader('Set-Cookie', [`sessionId=0`, `logInStatus=0`]);
-  res.redirect("/index.html");
+  res.redirect("/guestBook.html");
 }
 
 const redirectLogedInUserToGuestBook = function(req, res) {
-  debugger;
   if (req.url == '/logIn.html' && req.user) {
     res.redirect('/guestBook.html');
   };
@@ -69,11 +63,16 @@ const handleLoadingComments = function(req, res) {
 const handleNewComment = function(req, res) {
   let sessionId = req.cookies.sessionId;
   let commenter = this.getUserBySessionId(sessionId);
-  console.log(commenter);
-  let name = req.body.name;
+  let name = commenter.name;
   let comment = req.body.comment;
   this.addComment(name, comment);
   res.redirect('/guestBook.html');
+}
+
+const handleLoadingNameOfUser = function(req,res){
+  let user = this.getUserBySessionId(req.cookies.sessionId) || {};
+  res.write(user.name);
+  res.end();
 }
 
 exports.handleSlash = handleSlash;
@@ -83,3 +82,4 @@ exports.handleLogOut = handleLogOut;
 exports.handleNewComment = handleNewComment;
 exports.handleStaticFiles = handleStaticFiles;
 exports.redirectLogedInUserToGuestBook = redirectLogedInUserToGuestBook;
+exports.handleLoadingNameOfUser = handleLoadingNameOfUser;

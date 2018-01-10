@@ -17,6 +17,7 @@ const handleLogOut = lib.handleLogOut;
 const handleStaticFiles = lib.handleStaticFiles;
 const handleNewComment = lib.handleNewComment.bind(UserCommentLog);
 const redirectLogedInUserToGuestBook = lib.redirectLogedInUserToGuestBook;
+const handleLoadingNameOfUser = lib.handleLoadingNameOfUser.bind(UserCommentLog);
 
 const getUserInReq = function(req,res){
   let sessionId = req.body.sessionId;
@@ -31,6 +32,7 @@ app.preUse(handleSlash);
 app.preUse(redirectLogedInUserToGuestBook);
 
 app.get("/loadComments",handleLoadingComments);
+app.get("/loadNameOfUser",handleLoadingNameOfUser);
 app.get("/logOut",handleLogOut)
 
 app.post("/logIn",handleLogIn)

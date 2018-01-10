@@ -5,73 +5,24 @@
   <meta charset="utf-8">
   <title>Guest Book</title>
   <link rel="stylesheet" href="css/styles.css" />
-  <script type="text/javascript">
-    const displayComments = function(comments) {
-      let table = document.getElementById('commentsTable');
-      let insertedRow;
-      comments.forEach((element) => {
-        insertedRow = table.insertRow();
-        insertedRow.insertCell().innerText = element.date;
-        insertedRow.insertCell().innerText = element.name;
-        insertedRow.insertCell().innerText = element.comment;
-      });
-    }
-
-    const getComments = function() {
-      let req = new XMLHttpRequest();
-      req.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
-          let commentsStore = JSON.parse(this.responseText).reverse();
-          displayComments(commentsStore);
-        }
-      };
-      req.open("GET", "/loadComments");
-      req.send();
-    };
-
-    const parsekeyVal = function(text) {
-      return text.split(";").reduce((parsedKeyVals, ele) => {
-        let keyValPairs = ele.trim().split('=');
-        parsedKeyVals[keyValPairs[0]] = keyValPairs[1];
-        return parsedKeyVals;
-      }, {});
-    };
-
-    const hideCommentsSection = function() {
-      let commentSection = document.getElementById("guestBookForm");
-      commentSection.innerText = "";
-      commentSection.style.visibility = "hidden";
-    };
-
-    const showUserName = function(name){
-      let userNameBox = document.getElementById("userName");
-      userNameBox.innerText += name;
-    }
-
-    const showCommentSectionIfUser = function() {
-      let cookies = parsekeyVal(document.cookie);
-      if (!+cookies.sessionId && !+cookies.logInStatus)
-        hideCommentsSection();
-        showUserName(cookies.name);
-    }
-
-    const actionOnPageLoad = function() {
-      getComments();
-      showCommentSectionIfUser();
-    }
+  <script type="text/javascript" src="/js/guestBook.js">
   </script>
 </head>
 
 <body onload="actionOnPageLoad()">
   <div>
     <h1 id="flowerHeading"><a href="index.html"> << </a> Guest Book</h1>
+    <h2 id="userName" class="hide"></h2>
+    <h2 ><a href="/logIn.html" id="logInOption" class="hide"></a></h2>
+    <h2 ><a href="/logOut" id="logOutOption" class="hide"></a></h2>
   </div>
   <form id="guestBookForm" action="commentAccepted" method="post">
-    <h2 id="userName">name of User : </h2>
-    <h2 style="font-family:san-sarif">Leave A comment</h2> Your Name<input type="text" name="name" required/> <br /><br /> Comment
-    <textarea name="comment" style="height:40px" required></textarea><br />
+    <h2 style="font-family:san-sarif">Leave A comment</h2>
+    Comment : <textarea name="comment" style="height:40px" required></textarea>
+    <br />
     <button>submit</button>
   </form>
+  <h1>Comments</h1>
   <table id="commentsTable">
   </table>
 </body>
